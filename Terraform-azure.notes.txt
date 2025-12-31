@@ -1,0 +1,48 @@
+Terraform provider
+----------------------------
+
+Provider is the interface that interacts with the third party cloud provider apis.
+As different cloud provides has different ways of interacting and sending data, for each cloud provider we have different providers.
+
+Terraform file
+--------------------
+
+Terraform file will be created with .tf 
+The steps to run tf file is -
+
+Terraform init 
+Terraform validate
+Terraform paln
+Terraform apply
+
+Terraform checks the desired state with actual state when we run Terraform plan/apply.
+It creates and deleted the resource to match the desired state.
+If there is some modification in desired state, it can update/delete the infrastrcture.
+
+--------------------------------
+Statefile(remote backend)
+
+Terraform statefile has details of the acutal state of the infrastrcture.
+So that need to stored safely, so we are storing it in remote storage like s3 bucket or azure blob.
+And we also need to maintain state locking, i.e we need to prevent people applying chaning simultaneously.
+s3 bucket - dynamo db
+azure blob by default support state locking.
+
+-------------------------------------------------
+
+Variables:
+The variable is used to pass the required value at time of execution.
+The variables can be passed from the .tfvars file, command line, ENV
+There are precedenced for passing variable, when all are used.
+1. Passing from command line (ex: Terraform paln -var variable_name = value )
+2. Passing in the .tfvars (ex: Terraform plan -var-file = file.tfvars )
+3. Environment variable (ex: export TF_VAR_variable = value)
+4. default value   
+
+Locals:
+used for the paramter which need no to be changed or overriden
+
+Output:
+Used to print result needed after infrastrcture is created.
+
+-----------------------------------------------------
