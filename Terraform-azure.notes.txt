@@ -46,3 +46,143 @@ Output:
 Used to print result needed after infrastrcture is created.
 
 -----------------------------------------------------
+
+Directory structure:
+
+Here we create different file for different use cases.
+provider.tf
+backend.tf
+variables.tf
+output.tf 
+ect..
+
+Dependencies:
+implicit Dependencies: where we reference the other resources
+explict : where we use depends_on = [resource.name]
+
+-----------------------------------------------
+
+Type constratins:
+
+string, number, bool
+
+List : use to store the same type of value
+variable var_name {
+    type = list(string)
+    default = ["item1","item2"]
+}
+
+accessing :
+var.var_name[0] or var.var_name[1]
+
+##############################
+map: used to store in key value pair
+
+variable var_name{
+    type = map(string)
+    default = {
+        "Environment" = "dev"
+        "owner" = "dee"
+    }
+}
+
+accessing
+var.var_name["Environment"]
+
+##############################
+
+tuple: list of different type 
+variable var_name{
+    type = tuple([string, string, number])
+      description = "Network configuration (VNET address, subnet address, subnet mask)"
+    default = ( ["10.0.0.1/16","10.0.1.0",24])
+}
+
+accessing:
+element(var.var_name,0)
+
+##############################
+
+object: used to store the different set if values
+
+variable var_name{
+    type = object({
+    size         = string
+    publisher    = string
+    offer        = string
+    sku          = string
+    version      = string
+  })
+}
+
+accessing:
+var.var_name.size or var.var_name.publisher
+
+----------------------------------------------------
+
+count when we need to create a multiple resources.
+for_each need to be used for map, set. which has unqiur value
+
+output "name"{
+    value = [ for i in azurerm.storage_account.example: i.name]
+
+}
+
+>> If resources have names, IDs, or meaning → use for_each
+>> If you only need N copies → use count
+
+---------------------------------------------------------
+life cycle 
+
+we use lifecycle to handle the flow of life cycle
+
+create before destroy: make sure the resource is created before deleting the existing resource
+prevent destroy : prevent the deleltion of the resource
+precondition: handles the value in the allow list
+postcondition: check after the infra is created
+ignore_changes: ignore the changed of these infrastrcture
+
+--------------------------------------------------------
+
+dynamic
+
+for_each  → repeats RESOURCES
+dynamic   → repeats BLOCKS inside resources
+
+conditional expression
+
+var.Environment == "dev" ? "dev_nsg" : "staging_nsg"
+
+splat:
+
+it is prefered when no tranformation is needed
+
+aws_instance.web[*].public_ip  // splat expressionS
+
+vs
+
+[for i in aws_instance.web : i.public_ip]
+
+-------------------------------------------------------------
+
+functions:
+
+used builtin fuction do perform some operations
+
+-----------------------------------------------------
+
+data source:
+
+used to use the resource which already exists.
+And that resource is not addeed to terraform state.
+terraform doesnot take owner ship for the data source resource.
+
+--------------------------------------------------------------
+
+Problem faced:
+
+Problem 1:
+
+permission issue to run get providers when ran terraform plan:
+>>Assign contributor and network administrator role to access the azure from terraform.
+>>to create service principle we need user access administrator permission

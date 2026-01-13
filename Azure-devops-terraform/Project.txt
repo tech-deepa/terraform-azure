@@ -1,0 +1,26 @@
+#####################################################
+
+Steps to be created:
+
+1.Login , set variables
+2.Prep --> Backend dev
+	   --> Backend staging
+3.understand teraform code
+4.Evaluate manually
+5.destroy these manually created resources
+6.import the code in terraform
+7.write pipepline
+8.execute pipeline
+10.destroy
+
+Azure resources:
+
+1.Create backend using pipeline
+2.AKS cluster
+3.Build Agent --> MS agent or self hosted agent
+4.key vault + secret
+5.service principle
+6.Resource group
+7.pipeline ---> create a resources
+				delete a resources
+				
